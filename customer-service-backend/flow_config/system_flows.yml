@@ -1,0 +1,190 @@
+flows:
+  system_task_started:
+    description: Flow for acknowledging that a new task has started
+    name: task started acknowledgement
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，我们先处理{{ context.started_flow_name }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_resumed:
+    description: Flow for acknowledging that a paused task has been resumed
+    name: task resumed acknowledgement
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，我们继续刚才的{{ context.resumed_flow_name }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_collect_information:
+    description: Flow for asking the user for a slot value during a collect step
+    name: collect information
+    steps:
+      - id: start
+        type: start
+        next: ask
+
+      - id: ask
+        type: action
+        action: action_response
+        args: context.response   #  请告诉我你的订单号---->前端展示[没关系：未来]
+        next: listen
+
+      - id: listen
+        type: action
+        action: action_listen    # 引擎不能在向下执行（停止）---action_listen
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_interrupted:
+    description: Flow for acknowledging that the current task has been interrupted
+    name: task interrupted acknowledgement
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，我们先把{{ context.interrupted_flow_name }}放一放，先处理{{ context.started_flow_name }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_canceled:
+    description: Flow for acknowledging that the current task was canceled
+    name: task canceled acknowledgement
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，{{ context.canceled_flow_name }}先帮你取消。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+  system_cannot_handle:
+    description: Flow for handling requests the assistant cannot support
+    name: cannot handle request
+    steps:
+      - id: start
+        type: start
+        next:
+          - if: "context.get('reason') == 'clarification_rejected'"
+            then: clarification_rejected
+          - if: "context.get('reason') == 'not_supported'"
+            then: not_supported
+          - if: "context.get('reason') == 'no_relevant_answer'"
+            then: no_relevant_answer
+          - else: ask_rephrase
+
+      - id: clarification_rejected
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "看来我刚才理解偏了。你可以重新说一下你想查订单、查物流，还是申请退款吗？"
+          prompt: |
+            你是一个中文电商客服助手，语气自然、友好、简洁。
+            请基于下面的建议回复，生成一句更自然的中文回复，保持原意，不要扩写。
+            对话上下文：
+            {history}
+            用户最后一句：
+            用户：{user_message}
+            建议回复：{current_response}
+            改写后的回复：
+        next: end
+
+      - id: not_supported
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "我理解你的意思，不过这个能力目前还没有接入。"
+          prompt: |
+            你是一个中文电商客服助手，语气自然、友好、简洁。
+            请基于下面的建议回复，生成一句更自然的中文回复，保持原意，不要扩写。
+            对话上下文：
+            {history}
+            用户最后一句：
+            用户：{user_message}
+            建议回复：{current_response}
+            改写后的回复：
+        next: end
+
+      - id: no_relevant_answer
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "我暂时没有查到合适的信息。你可以换个说法，或者告诉我更具体一点的商品或订单信息。"
+          prompt: |
+            你是一个中文电商客服助手，语气自然、友好、简洁。
+            请基于下面的建议回复，生成一句更自然的中文回复，保持原意，不要扩写。
+            对话上下文：
+            {history}
+            用户最后一句：
+            用户：{user_message}
+            建议回复：{current_response}
+            改写后的回复：
+        next: end
+
+      - id: ask_rephrase
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "抱歉，我这边没有完全听明白。你可以再具体说一下你想处理什么电商问题吗？"
+          prompt: |
+            你是一个中文电商客服助手，语气自然、友好、简洁。
+            请基于下面的建议回复，生成一句更自然的中文回复，保持原意，不要扩写。
+            对话上下文：
+            {history}
+            用户最后一句：
+            用户：{user_message}
+            建议回复：{current_response}
+            改写后的回复：
+        next: end
+
+      - id: end
+        type: end
+        next: []

@@ -1,0 +1,22 @@
+[project]
+name = "customer-service-1208"
+version = "1.0"
+description = "电商客服项目"
+requires-python = ">=3.12"
+dependencies = [
+    "aiomysql>=0.3.2",
+    "cryptography>=46.0.7",
+    "fastapi>=0.136.0",
+    "httpx>=0.28.1",
+    "jinja2>=3.1.6",
+    "langchain>=1.2.15",
+    "langchain-openai>=1.1.14",
+    "pydantic-settings>=2.13.1",
+    "pyyaml>=6.0.3",
+    "sqlalchemy>=2.0.49",
+    "uvicorn[standard]>=0.44.0",
+    "alibabacloud-lingmou20250527>=1.0.0",
+    "alibabacloud-tea-openapi>=0.3.12",
+    "alibabacloud-tea-util>=0.3.13",
+    "dashscope"
+]
