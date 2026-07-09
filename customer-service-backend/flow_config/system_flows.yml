@@ -17,7 +17,7 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
 
   system_task_resumed:
     description: Flow for acknowledging that a paused task has been resumed
@@ -37,7 +37,7 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
 
   system_collect_information:
     description: Flow for asking the user for a slot value during a collect step
@@ -60,7 +60,7 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
 
   system_task_interrupted:
     description: Flow for acknowledging that the current task has been interrupted
@@ -80,7 +80,7 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
 
   system_task_canceled:
     description: Flow for acknowledging that the current task was canceled
@@ -101,7 +101,7 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
   system_cannot_handle:
     description: Flow for handling requests the assistant cannot support
     name: cannot handle request
@@ -187,4 +187,4 @@ flows:
 
       - id: end
         type: end
-        next: []
+        next: [ ]
