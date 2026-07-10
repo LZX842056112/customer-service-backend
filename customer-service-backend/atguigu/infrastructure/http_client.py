@@ -13,7 +13,7 @@ http_client: AsyncClient | None = None
 def init_http_client():
     global http_client
 
-    http_client = AsyncClient(timeout=120)
+    http_client = AsyncClient(timeout=120, trust_env=False)
 
 
 async def dispose_http_client():
@@ -23,12 +23,10 @@ async def dispose_http_client():
 async def main():
     init_http_client()
 
-    response = await http_client.get(url="http://111.228.53.183:18081/orders/A20260410001")
-    # response = await http_client.get(url="http://192.168.200.125:18081/orders/A20260410001")
+    # response = await http_client.get(url="http://111.228.53.183:18081/orders/A20260410001")
+    response = await http_client.get(url="http://192.168.200.125:18081/orders/A20260410001")
 
-    data = response.json()
-
-    print(data)
+    print(response)
 
 
 if __name__ == '__main__':

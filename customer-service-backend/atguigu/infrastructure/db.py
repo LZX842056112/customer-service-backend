@@ -31,7 +31,8 @@ async def init_db_engine():
     """
     global engine, session_factory
 
-    engine = create_async_engine(settings.database_url, echo=True)  # echo=True 在控制台可以看到sql语句打印
+    engine = create_async_engine(settings.database_url,
+                                 echo=True)  # echo=True 在控制台可以看到sql语句打印
 
     session_factory = async_sessionmaker(engine, expire_on_commit=False)  # 异步环境下设置为False
 
@@ -44,10 +45,8 @@ async def main():
     await init_db_engine()
 
     async with session_factory() as session:  # async别漏
-        result = await session.execute(text("select 1"))  # 防止sql注入
+        result = await  session.execute(text("select  1"))  # 防止sql注入
         print(result.fetchone())
-
-    await dispose_engine()
 
 
 import asyncio
