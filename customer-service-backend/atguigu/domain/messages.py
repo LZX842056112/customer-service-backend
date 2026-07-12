@@ -93,3 +93,10 @@ class BotMessage:
             text=data.get('text'),
             object=FocusedObject.from_dict(data['object']) if data.get('object') else None
         )
+
+
+@dataclass(slots=True)
+class ProcessResult:
+    sender_id: str
+    message_id: str
+    messages: list[BotMessage]
