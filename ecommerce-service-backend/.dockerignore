@@ -1,0 +1,8 @@
+# .dockerignore 文件内容示例
+.venv/
+.env
+__pycache__/
+*.pyc
+.git/
+mysql/
+README.MD
