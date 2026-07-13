@@ -35,7 +35,7 @@ class Turn:
     def from_dict(cls, data: dict[str, Any]) -> "Turn":
         return cls(
             turn_id=data['turn_id'],
-            user_message=data['user_message'],
+            user_message=UserMessage.from_dict(data['user_message']),
             bot_messages=[BotMessage.from_dict(bot_message_dict) for bot_message_dict in data.get('bot_messages', [])]
         )
 
