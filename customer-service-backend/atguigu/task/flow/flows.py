@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from atguigu.task.flow.steps import FlowStep
 
 
@@ -29,3 +29,12 @@ class FlowsList:
     """
     flows: list[Flow] = field(default_factory=list)  # 两份yaml的flows内容
     slots: dict[str, FlowSlot] = field(default_factory=dict)  # 两份yaml的slots内容
+
+
+
+    def  get_flow_by_id(self,flow_id:str)->Flow | None:
+
+        for flow in self.flows:
+            if flow.flow_id==flow_id:
+                return  flow
+        return  None

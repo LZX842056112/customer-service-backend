@@ -1,4 +1,6 @@
+from atguigu.domain.messages import BotMessage
 
 
 class ChitChatHandler:
-    pass
+    async def hand(self, state)->list[BotMessage]:
+        pass

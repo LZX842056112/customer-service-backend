@@ -28,7 +28,7 @@ class DialogueService:
         # 1. 从数据库中读取之前的DialogueState
         dialogue_state: DialogueState = await self.repository.load_dialogue(user_message.sender_id)
 
-        # 2. 引擎层使用(修改DialogueState的状态) 今天不做（TODO）
+        # 2. 引擎层使用(修改DialogueState的状态)
         process_result: ProcessResult = await self.engine.hand_message(user_message, dialogue_state)
 
         # 3. 将修改后的修改DialogueState的状态 存储到数据库中

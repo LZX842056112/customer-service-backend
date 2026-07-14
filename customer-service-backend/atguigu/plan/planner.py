@@ -12,6 +12,7 @@ from atguigu.prompts.loader import load_prompt_template
 from atguigu.infrastructure.llm_client import llm_client
 from atguigu.history.builder import ChatHistoryBuilder
 from atguigu.task.flow.flows import FlowsList
+from atguigu.knowledge.intents import KnowledgeIntent
 
 
 class TurnPlanner:
@@ -23,11 +24,13 @@ class TurnPlanner:
                       user_message: UserMessage,
                       *,
                       state: DialogueState,
-                      flow_list: FlowsList
+                      flow_list: FlowsList,
+                      intents: dict[str, KnowledgeIntent]
                       ) -> TurnPlan:
         # 1. 构建提示词模版要的内容（不需要构建提示词模版）
 
-        prompt_inputs: dict[str, Any] = self._prepare_prompt_inputs(user_message, state=state, flow_list=flow_list)
+        prompt_inputs: dict[str, Any] = self._prepare_prompt_inputs(user_message, state=state, flow_list=flow_list,
+                                                                    intents=intents)
 
         # 2. 调用大语言模型
         turn_plan = await self.predict_from_prompt_inputs(prompt_inputs)
@@ -37,7 +40,8 @@ class TurnPlanner:
     def _prepare_prompt_inputs(self,
                                user_message: UserMessage,
                                state: DialogueState,
-                               flow_list: FlowsList
+                               flow_list: FlowsList,
+                               intents: dict[str, KnowledgeIntent]
                                ) -> dict[str, Any]:
         user_message = ChatHistoryBuilder.process_user_message(user_message)
         current_conversation = ChatHistoryBuilder.build(state.current_session().turns[-10:])
@@ -60,6 +64,12 @@ class TurnPlanner:
             ]
         }, ensure_ascii=False)
 
+        # 知识意图的清单
+        knowledge_intents_json = json.dumps(
+            [{"id": intent.id, "description": intent.description} for intent in intents.values()],
+            ensure_ascii=False
+        )
+
         return {
             "user_message": user_message,
             "current_conversation": current_conversation,
@@ -70,7 +80,7 @@ class TurnPlanner:
             "active_task_json": active_task_json,
 
             "available_flows_json": available_flows_json,
-            "knowledge_intents_json": ""
+            "knowledge_intents_json": knowledge_intents_json
 
         }
 
