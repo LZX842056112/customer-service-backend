@@ -25,7 +25,7 @@ class ResumedFlowCommand(Command):
 
 @dataclass
 class CancelFlowCommand(Command):
-    pass
+    flow: str | None = None
 
 
 @dataclass

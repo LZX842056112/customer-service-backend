@@ -23,7 +23,7 @@ def init_dialogue_engine():
     dialogue_engine = build_dialogue_engine()
 
 
-def get_engine():
+async def get_engine():
     return dialogue_engine
 
 
@@ -38,14 +38,14 @@ async def get_session():
 RepositorySessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 
-def get_repository(session: RepositorySessionDep):
+async def get_repository(session: RepositorySessionDep):
     return DialogueRepository(session=session)
 
 
 DialogueRepositoryDep = Annotated[DialogueRepository, Depends(get_repository)]
 
 
-def get_dialogue_service(engine: DialogueEngineDep,
+async def get_dialogue_service(engine: DialogueEngineDep,
                          repo: DialogueRepositoryDep
                          ):
     return DialogueService(

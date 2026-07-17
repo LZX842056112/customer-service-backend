@@ -9,6 +9,8 @@ from atguigu.chitchat.handler import ChitChatHandler
 from atguigu.task.flow.loader import FlowLoader
 from atguigu.knowledge.intents import KNOWLEDGE_INTENTS
 from atguigu.clarify.responder import ClarifyResponser
+from atguigu.task.command.processor import CommandProcessor
+from atguigu.task.flow.executor import FlowExecutor
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parents[2]
 FLOW_CONFIG_DIR = PROJECT_ROOT_DIR / "flow_config"
@@ -21,7 +23,10 @@ def build_dialogue_engine():
 
     return DialogueEngine(
         planner=TurnPlanner(),
-        task_handler=TaskHandler(flow_list=flow_list),
+        task_handler=TaskHandler(flow_list=flow_list,
+                                 command_processor=CommandProcessor(),
+                                 executor=FlowExecutor()
+                                 ),
         turn_plan_validator=TurnPlanValidator(),
         knowledge_handler=KnowledgeHandler(intents=KNOWLEDGE_INTENTS),
         chitchat_handler=ChitChatHandler(),

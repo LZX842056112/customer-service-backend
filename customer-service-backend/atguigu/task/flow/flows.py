@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, asdict
-from atguigu.task.flow.steps import FlowStep
+from atguigu.task.flow.steps import FlowStep, StartFlowStep
 
 
 @dataclass(slots=True)
@@ -21,6 +21,14 @@ class Flow:
     steps: list[FlowStep] = field(default_factory=list)
     slots: dict[str, FlowSlot] = field(default_factory=dict)  # 将业务流程用到的槽位封装到Flow
 
+    def get_start_step(self) -> StartFlowStep | None:
+
+        for step in self.steps:
+            if isinstance(step, StartFlowStep):
+                return step
+
+        return None
+
 
 @dataclass(slots=True)
 class FlowsList:
@@ -30,11 +38,9 @@ class FlowsList:
     flows: list[Flow] = field(default_factory=list)  # 两份yaml的flows内容
     slots: dict[str, FlowSlot] = field(default_factory=dict)  # 两份yaml的slots内容
 
-
-
-    def  get_flow_by_id(self,flow_id:str)->Flow | None:
+    def get_flow_by_id(self, flow_id: str) -> Flow | None:
 
         for flow in self.flows:
-            if flow.flow_id==flow_id:
-                return  flow
-        return  None
+            if flow.flow_id == flow_id:
+                return flow
+        return None
