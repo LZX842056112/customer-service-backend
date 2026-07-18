@@ -24,7 +24,7 @@ class Action(ABC):
     name: str  # 抽象action的名字属性
 
     @abstractmethod
-    def run(self,
+    async  def run(self,
             state: DialogueState,
             action_args: dict[str, Any]
             ) -> ActionResult:

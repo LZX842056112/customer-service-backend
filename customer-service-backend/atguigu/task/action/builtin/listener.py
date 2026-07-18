@@ -8,7 +8,7 @@ class ActionListener(Action):
 
     name = "action_listen"
 
-    def run(self,
+    async def run(self,
             state: DialogueState,
             action_args: dict[str, Any]) -> ActionResult:
         pass

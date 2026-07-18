@@ -7,7 +7,7 @@ from atguigu.task.action.base import Action, ActionResult
 class LookupLogisticsAction(Action):
     name = "action_lookup_logistics"
 
-    def run(self, state: DialogueState, action_args: dict[str, Any]) -> ActionResult:
+    async def run(self, state: DialogueState, action_args: dict[str, Any]) -> ActionResult:
 
         """
         从中台服务中查询物流状态接口
@@ -15,7 +15,7 @@ class LookupLogisticsAction(Action):
         :param action_args:
         :return:
         """
-        pass
+        return ActionResult(slot_updates={})
 
 
 

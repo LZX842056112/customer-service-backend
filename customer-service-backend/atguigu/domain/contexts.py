@@ -46,8 +46,8 @@ class SystemContext:
     """
     系统流程的模版
     """
-    system_flow_id: str  # 开启的系统流程ID(不同的阶段)
-    system_step_id: str  # 开启系统流程的步骤ID(某一个流程下的不同的步骤)
+    flow_id: str  # 开启的系统流程ID(不同的阶段)
+    step_id: str  # 开启系统流程的步骤ID(某一个流程下的不同的步骤)
 
     def to_dict(self) -> dict[str, Any]:
         """将具体的子类对象转成字典 asdict()"""
@@ -60,7 +60,7 @@ class SystemContext:
         :param data:
         :return:
         """
-        clz = SYSTEM_CONTEXT_TO_CLASS[data['system_flow_id']]
+        clz = SYSTEM_CONTEXT_TO_CLASS[data['flow_id']]
         return clz(**data)
 
 
@@ -110,7 +110,7 @@ class CollectedSystemContext(SystemContext):
     """
 
     response: dict[str, Any]  # {"text": "请告诉我你的订单号。"}
-    slot_name: str  # 槽位名字 "order_number" TODO
+    slot_name: str  # 槽位名字 "order_number"
 
 
 SYSTEM_CONTEXT_TO_CLASS: dict[str, Any] = {

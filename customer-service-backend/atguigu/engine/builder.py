@@ -11,6 +11,7 @@ from atguigu.knowledge.intents import KNOWLEDGE_INTENTS
 from atguigu.clarify.responder import ClarifyResponser
 from atguigu.task.command.processor import CommandProcessor
 from atguigu.task.flow.executor import FlowExecutor
+from atguigu.task.action.builder import build_action_runner
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parents[2]
 FLOW_CONFIG_DIR = PROJECT_ROOT_DIR / "flow_config"
@@ -25,7 +26,8 @@ def build_dialogue_engine():
         planner=TurnPlanner(),
         task_handler=TaskHandler(flow_list=flow_list,
                                  command_processor=CommandProcessor(),
-                                 executor=FlowExecutor()
+                                 executor=FlowExecutor(),
+                                 action_runner=build_action_runner()
                                  ),
         turn_plan_validator=TurnPlanValidator(),
         knowledge_handler=KnowledgeHandler(intents=KNOWLEDGE_INTENTS),

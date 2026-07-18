@@ -76,7 +76,7 @@ class DialogueEngine:
 
         # 6. 返回
         return ProcessResult(sender_id="1001", message_id="11111",
-                             messages=[BotMessage(text="我是电商客服，请问你有什么问题需要我帮助的嘛")])
+                             messages=bot_msgs)
 
     def _prepare_session(self, state: DialogueState):
         """
